@@ -124,7 +124,7 @@ class DCEL(object):
             self.faceList.remove(element)
             del element
         else:
-            print "illegal element type"
+            print ("illegal element type")
 
     def __repr__(self):
         s = ""
@@ -139,8 +139,8 @@ class DCEL(object):
     def checkEdgeTwins(self):
         for e in self.hedgeList:
             if not e == e.twin.twin:
-                print "this edge has a problem with its twin:",
-                print e
+                print ("this edge has a problem with its twin:"),
+                print (e)
 
     def remove_vertex(self, vertex):
         """Experimental!"""
@@ -154,19 +154,19 @@ class DCEL(object):
         # we don't want to come near the infiniteFace
         for e in e_0.wind():
             # raw_input()
-            print e, e.twin, e.incidentFace
+            print (e, e.twin, e.incidentFace)
             if e.incidentFace == self.infiniteFace:
-                print "refusing to remove vertex incident to infiniteFace..."
+                print ("refusing to remove vertex incident to infiniteFace...")
                 return
 
         # we also don't want to create any dangling edges
         for e in e_0.wind():
             if e.previous == e.twin.next.twin:
-                print "refusing to remove this vertex because it will create dangling edge(s)"
+                print ("refusing to remove this vertex because it will create dangling edge(s)")
                 return
             for e_neighbor in e.next.wind():
                 if e_neighbor.previous == e_neighbor.twin.next.twin:
-                    print "refusing to remove this vertex because it might cause dangling edge(s) in future"
+                    print ("refusing to remove this vertex because it might cause dangling edge(s) in future")
                     return
 
         # FIXME: what to do if we are about to create a hole...?

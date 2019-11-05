@@ -1,6 +1,6 @@
-from dcel import vertex, hedge, face, DCEL
-from sets import Set
-from writegrid2ply import writegrid2ply
+from .dcel import vertex, hedge, face, DCEL
+
+from .writegrid2ply import writegrid2ply
 
 def ply2datadict(infile):
 	"""collect vertex coordinates and normals from input file"""
@@ -19,14 +19,14 @@ def ply2datadict(infile):
 		datadict['coords'] = []
 		datadict['normals'] = []
 
-		for i in xrange(int(vertexcount)):
+		for i in range(int(vertexcount)):
 			line = f.readline()
 			x,y,z= line.split()
 			datadict['coords'].append([float(x),float(y),float(z)])
 
 		if facecount is not None:
 			datadict['faces'] = []
-			for i in xrange(int(facecount)):
+			for i in range(int(facecount)):
 				line = f.readline().split()
 				vertex_ids = [int(x) for x in line[1:]]
 				datadict['faces'].append(vertex_ids)
@@ -39,7 +39,7 @@ def datadict2dcel(datadict):
 	vertices = {} # v_id: (e0,...,en) i.e. the edges originating from this v
 
 	m = len(datadict['coords'])
-	for i in xrange(m):
+	for i in range(m):
 		vertices[i] = []
 
 	# find all halfedges, keep track of their vertices and faces
@@ -48,7 +48,7 @@ def datadict2dcel(datadict):
 		# face.reverse()
 		n_vertices = len(face)
 
-		for v_i in xrange(n_vertices):
+		for v_i in range(n_vertices):
 			# store reference to this hedge in vertex list
 			vertices[face[v_i]].append(j)
 
@@ -71,22 +71,22 @@ def datadict2dcel(datadict):
 		dcel_v = D.createVertex(v[0], v[1], v[2])
 
 	# create faces
-	for f in xrange(len(datadict['faces'])):
+	for f in range(len(datadict['faces'])):
 		D.createFace()
 	# the last face in the DCEL will be the infinite face:
 	infinite_face = D.createInfFace()
 
 	# create all edges except for the ones incident to the infinite face
-	for e in xrange(len(hedges)):
+	for e in range(len(hedges)):
 		D.createHedge()
 
 	inf_edge = None
-	for this_edge, value in hedges.iteritems():
+	for this_edge, value in hedges.items():
 		v, face, nextedge, prevedge = value
 		v_origin, v_end = v
 
-		v_origin_edges = Set(vertices[v_origin])
-		v_end_edges = Set(vertices[v_end])
+		v_origin_edges = set(vertices[v_origin])
+		v_end_edges = set(vertices[v_end])
 
 		# print v_origin_edges, v_end_edges
 		twin_edge = v_origin_edges.intersection(v_end_edges)

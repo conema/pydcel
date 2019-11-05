@@ -1,4 +1,4 @@
-from Tkinter import *
+from tkinter import *
 
 try:
     from pyflann import FLANN
@@ -8,9 +8,9 @@ except ImportError:
     WITH_FLANN = False
 
 import math
-from vector import vec2
+from .vector import vec2
 
-from interface_draw import draw
+from .interface_draw import draw
 HELP = """
 q - quit
 h - print help message
@@ -74,10 +74,10 @@ class dcelVis(Tk):
         return (x,y)
 
     def print_help(self, event):
-        print HELP
+        print (HELP)
 
     def print_dcel(self, event):
-        print self.D
+        print (self.D)
 
     def bind_dcel(self, dcel):
         minx = maxx = dcel.vertexList[0].x
@@ -140,24 +140,24 @@ class dcelVis(Tk):
 
     def iteratehedge(self, event):
         try:
-            self.hedge_it.next()
+            next(self.hedge_it)
         except StopIteration:
             self.hedge_it = self.type_iterator('hedge')
-            self.hedge_it.next()
+            next(self.hedge_it)
 
     def iterateface(self, event):
         try:
-            self.face_it.next()
+            next(self.face_it)
         except StopIteration:
             self.face_it = self.type_iterator('face')
-            self.face_it.next()
+            next(self.face_it)
 
     def iteratevertex(self, event):
         try:
-            self.vertex_it.next()
+            next(self.vertex_it)
         except StopIteration:
             self.vertex_it = self.type_iterator('vertex')
-            self.vertex_it.next()
+            next(self.vertex_it)
 
 
     def type_iterator(self, q='hedge'):
@@ -172,7 +172,7 @@ class dcelVis(Tk):
                 yield self.explain_vertex(e)
 
     def explain_hedge(self, e):
-        print e
+        print (e)
         self.draw.deleteItems(self.highlight_cache)
 
         i1 = self.draw_dcel_face(e.incidentFace, fill='#ffc0bf', outline='')
@@ -185,7 +185,7 @@ class dcelVis(Tk):
         self.highlight_cache = [i1,i2,i3,i4,i5,i6]
 
     def explain_vertex(self, v):
-        print v
+        print (v)
         self.draw.deleteItems(self.highlight_cache)
 
         i1 = self.draw_dcel_vertex(v, size=7, fill='red', outline='')
@@ -194,7 +194,7 @@ class dcelVis(Tk):
         self.highlight_cache = [i1,i2]
 
     def explain_face(self, f):
-        print f
+        print (f)
         self.draw.deleteItems(self.highlight_cache)
 
         i1 = self.draw_dcel_face(f, fill='#ffc0bf', outline='')
@@ -238,7 +238,7 @@ class dcelVis(Tk):
 
     def draw_dcel_face(self, f, **options):
         if f == self.D.infiniteFace:
-            print 'Im not drawing infiniteFace'
+            print ('Im not drawing infiniteFace')
             return
 
         if options == {}:
@@ -252,9 +252,9 @@ class dcelVis(Tk):
         y = self.canvas.canvasy(event.y)
         # print event.x, event.y
         # print x,y
-        print self.canvas.find_closest(x, y)
+        print (self.canvas.find_closest(x, y))
 
     def exit(self, event):
-        print "bye bye."
+        print ("bye bye.")
         self.quit()
         self.destroy()

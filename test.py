@@ -1,4 +1,4 @@
-import pydcel
+import pydcel.io
 
 d = pydcel.io.ply2dcel('sampledata/simplegeom.ply')
 
